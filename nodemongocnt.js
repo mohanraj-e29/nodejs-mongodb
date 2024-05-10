@@ -138,6 +138,23 @@ app.get('/claims', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+// GET request to fetch a specific claim by ID
+app.get('/claims/:id', async (req, res) => {
+    const claimId = req.params.id;
+
+    try {
+        const claim = await Claim.findById(claimId);
+        if (!claim) {
+            return res.status(404).json({ error: 'Claim not found' });
+        }
+        res.json(claim);
+    } catch (error) {
+        console.error('Error fetching claim by ID:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 
 
 app.get('/id/:name', async (req, res) => {
