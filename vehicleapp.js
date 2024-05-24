@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 
 const conn = process.env.CONN;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,26 +31,34 @@ const Vehicle = mongoose.model('Vehicle', vehicleSchema);
 // Route to check if a vehicle exists
 app.post('/checkvehicle', async (req, res) => {
     const { registrationNumber } = req.body;
-    const vehicle = await Vehicle.findOne({ registrationNumber });
-    if (vehicle) {
-        res.json({ exists: true, vehicle });
-    } else {
-        res.json({ exists: false });
+    try {
+        const vehicle = await Vehicle.findOne({ registrationNumber });
+        if (vehicle) {
+            res.json({ exists: true, status: vehicle.status });
+        } else {
+            res.json({ exists: false });
+        }
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
 // Route to add a new vehicle
 app.post('/addvehicle', async (req, res) => {
     const { registrationNumber, ownerName, vehicleType, mileage, status } = req.body;
-    const newVehicle = new Vehicle({
-        registrationNumber,
-        ownerName,
-        vehicleType,
-        mileage,
-        status // Add this line to handle the new status field
-    });
-    await newVehicle.save();
-    res.json({ success: true, vehicle: newVehicle });
+    try {
+        const newVehicle = new Vehicle({
+            registrationNumber,
+            ownerName,
+            vehicleType,
+            mileage,
+            status // Add this line to handle the new status field
+        });
+        await newVehicle.save();
+        res.json({ success: true, vehicle: newVehicle });
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
 
 // Route to get all vehicles data
@@ -63,7 +71,6 @@ app.get("/allvehicle", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
-
 
 // Start the server
 app.listen(PORT, () => {
