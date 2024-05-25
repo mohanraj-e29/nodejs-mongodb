@@ -31,17 +31,14 @@ const Vehicle = mongoose.model('Vehicle', vehicleSchema);
 // Route to check if a vehicle exists
 app.post('/checkvehicle', async (req, res) => {
     const { registrationNumber } = req.body;
-    try {
-        const vehicle = await Vehicle.findOne({ registrationNumber });
-        if (vehicle) {
-            res.json({ exists: true, status: vehicle.status });
-        } else {
-            res.json({ exists: false });
-        }
-    } catch (err) {
-        res.status(500).json({ error: "Internal server error" });
+    const vehicle = await Vehicle.findOne({ registrationNumber });
+    if (vehicle) {
+        res.json({ exists: true, status: vehicle.status });
+    } else {
+        res.json({ exists: false });
     }
 });
+
 
 // Route to add a new vehicle
 app.post('/addvehicle', async (req, res) => {
