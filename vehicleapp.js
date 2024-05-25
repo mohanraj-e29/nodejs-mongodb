@@ -29,8 +29,20 @@ const vehicleSchema = new mongoose.Schema({
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);
 
 // Route to check if a vehicle exists
-app.post('/checkvehicle', async (req, res) => {
-    const { registrationNumber } = req.body;
+// app.post('/checkvehicle', async (req, res) => {
+//     const { registrationNumber } = req.body;
+//     const vehicle = await Vehicle.findOne({ registrationNumber });
+//     if (vehicle) {
+//         res.json({ exists: true, status: vehicle.status });
+//     } else {
+//         res.json({ exists: false });
+//     }
+// });
+
+
+// Route to check if a vehicle exists by registration number (GET request)
+app.get('/checkvehicle/:registrationNumber', async (req, res) => {
+    const registrationNumber = req.params.registrationNumber;
     const vehicle = await Vehicle.findOne({ registrationNumber });
     if (vehicle) {
         res.json({ exists: true, status: vehicle.status });
@@ -38,7 +50,6 @@ app.post('/checkvehicle', async (req, res) => {
         res.json({ exists: false });
     }
 });
-
 
 // Route to add a new vehicle
 app.post('/addvehicle', async (req, res) => {
