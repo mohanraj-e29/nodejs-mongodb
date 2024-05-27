@@ -83,72 +83,6 @@ app.post('/rooms/:name/humidity', async (req, res) => {
     }
 });
 
-
-// Update humidity of room1
-app.post('/rooms/room1/humidity', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'room1' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.humidity = req.body.humidity;
-        await room.save();
-        res.json({ status: 'Humidity updated for room1' });
-    } catch (error) {
-        console.error('Error updating humidity for room1:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Update humidity of room2
-app.post('/rooms/room2/humidity', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'room2' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.humidity = req.body.humidity;
-        await room.save();
-        res.json({ status: 'Humidity updated for room2' });
-    } catch (error) {
-        console.error('Error updating humidity for room2:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Update humidity of hall
-app.post('/rooms/hall/humidity', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'hall' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.humidity = req.body.humidity;
-        await room.save();
-        res.json({ status: 'Humidity updated for hall' });
-    } catch (error) {
-        console.error('Error updating humidity for hall:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Update humidity of kitchen
-app.post('/rooms/kitchen/humidity', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'kitchen' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.humidity = req.body.humidity;
-        await room.save();
-        res.json({ status: 'Humidity updated for kitchen' });
-    } catch (error) {
-        console.error('Error updating humidity for kitchen:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-
 // Update temperature of a room
 app.post('/rooms/:name/temperature', async (req, res) => {
     try {
@@ -164,66 +98,28 @@ app.post('/rooms/:name/temperature', async (req, res) => {
     }
 });
 
-// Update temperature of room1
-app.post('/rooms/room1/temperature', async (req, res) => {
+// Get temperature of a room
+app.get('/rooms/:name/temperature', async (req, res) => {
     try {
-        const room = await Room.findOne({ name: 'room1' });
+        const room = await Room.findOne({ name: req.params.name });
         if (!room) {
             return res.status(404).json({ error: 'Room not found' });
         }
-        room.temperature = req.body.temperature;
-        await room.save();
-        res.json({ status: 'Temperature updated for room1' });
+        res.json({ temperature: room.temperature });
     } catch (error) {
-        console.error('Error updating temperature for room1:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// Update temperature of room2
-app.post('/rooms/room2/temperature', async (req, res) => {
+// Get light status of a room
+app.get('/rooms/:name/lights', async (req, res) => {
     try {
-        const room = await Room.findOne({ name: 'room2' });
+        const room = await Room.findOne({ name: req.params.name });
         if (!room) {
             return res.status(404).json({ error: 'Room not found' });
         }
-        room.temperature = req.body.temperature;
-        await room.save();
-        res.json({ status: 'Temperature updated for room2' });
+        res.json({ lights: room.lights });
     } catch (error) {
-        console.error('Error updating temperature for room2:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Update temperature of hall
-app.post('/rooms/hall/temperature', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'hall' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.temperature = req.body.temperature;
-        await room.save();
-        res.json({ status: 'Temperature updated for hall' });
-    } catch (error) {
-        console.error('Error updating temperature for hall:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Update temperature of kitchen
-app.post('/rooms/kitchen/temperature', async (req, res) => {
-    try {
-        const room = await Room.findOne({ name: 'kitchen' });
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-        room.temperature = req.body.temperature;
-        await room.save();
-        res.json({ status: 'Temperature updated for kitchen' });
-    } catch (error) {
-        console.error('Error updating temperature for kitchen:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -284,7 +180,61 @@ app.get('/rooms/kitchen/temperature', async (req, res) => {
     }
 });
 
+// Get light status of room1
+app.get('/rooms/room1/lights', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'room1' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ lights: room.lights });
+    } catch (error) {
+        console.error('Error getting light status for room1:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
+// Get light status of room2
+app.get('/rooms/room2/lights', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'room2' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ lights: room.lights });
+    } catch (error) {
+        console.error('Error getting light status for room2:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get light status of hall
+app.get('/rooms/hall/lights', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'hall' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ lights: room.lights });
+    } catch (error) {
+        console.error('Error getting light status for hall:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get light status of kitchen
+app.get('/rooms/kitchen/lights', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'kitchen' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ lights: room.lights });
+    } catch (error) {
+        console.error('Error getting light status for kitchen:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 // Start the server
 app.listen(PORT, () => {
