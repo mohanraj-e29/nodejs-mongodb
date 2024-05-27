@@ -228,6 +228,61 @@ app.post('/rooms/kitchen/temperature', async (req, res) => {
     }
 });
 
+// Get temperature of room1
+app.get('/rooms/room1/temperature', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'room1' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ temperature: room.temperature });
+    } catch (error) {
+        console.error('Error getting temperature for room1:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get temperature of room2
+app.get('/rooms/room2/temperature', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'room2' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ temperature: room.temperature });
+    } catch (error) {
+        console.error('Error getting temperature for room2:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get temperature of hall
+app.get('/rooms/hall/temperature', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'hall' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ temperature: room.temperature });
+    } catch (error) {
+        console.error('Error getting temperature for hall:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get temperature of kitchen
+app.get('/rooms/kitchen/temperature', async (req, res) => {
+    try {
+        const room = await Room.findOne({ name: 'kitchen' });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+        res.json({ temperature: room.temperature });
+    } catch (error) {
+        console.error('Error getting temperature for kitchen:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 
