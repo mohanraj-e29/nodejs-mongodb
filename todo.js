@@ -17,10 +17,21 @@ mongoose.connect(conn)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
+
 // Define the ToDo schema
 const todoSchema = new mongoose.Schema({
     title: { type: String, required: true, trim: true },
     completed: { type: Boolean, default: false }
+}, { versionKey: false });
+
+// Add a virtual field 'id' to the schema
+todoSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialized
+todoSchema.set('toJSON', {
+    virtuals: true
 });
 
 // Create the ToDo model
@@ -73,8 +84,6 @@ app.patch('/todos/:id', async (req, res) => {
 });
 
 // Delete a ToDo item by id
-
-// Delete a ToDo item by id
 app.delete('/todos/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -90,7 +99,6 @@ app.delete('/todos/:id', async (req, res) => {
     }
 });
 
-
 app.listen(PORT, () => {
-    console.log(`ToDo app listening at http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
